@@ -17,6 +17,6 @@ def measure_time(n: int, max_delay: int) -> float:
     asyncio.run(wait_n(n, max_delay))
     end = time.time()
 
-    total_time = end - start  
+    total_time = end - start
     avg_time_per_oper = total_time / n
     return avg_time_per_oper
