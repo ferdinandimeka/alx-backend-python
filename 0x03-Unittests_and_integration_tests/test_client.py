@@ -9,6 +9,7 @@ from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 from typing import Dict
 
+
 class TestGithubOrgClient(unittest.TestCase):
     """GithubOrgClient class unitests
     """
@@ -32,15 +33,21 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         with patch('client.GithubOrgClient.org',
                    new_callable=PropertyMock) as mocked_org:
-            mocked_org.return_value = {'repos_url': 'https://api.github.com/users/google/repos'}
+            mocked_org.return_value = {
+                'repos_url': 'https://api.github.com/users/google/repos'
+                }
             client = GithubOrgClient('test')
-            self.assertEqual(client._public_repos_url, 'https://api.github.com/users/google/repos')
+            self.assertEqual(
+                client._public_repos_url,
+                'https://api.github.com/users/google/repos'
+                )
             mocked_org.assert_called_once_with()
 
-    @patch('client.get_json') 
+    @patch('client.get_json')
     def test_public_repos(self, mock_get_json: MagicMock) -> None:
-        """Test that the list of repos is what you expect from the chosen payload.
-        Test that the mocked property and method were called once.
+        """Test that the list of repos is what you expect from the
+            chosen payload. Test that the mocked property and method
+            were called once.
         """
         test_payload = {
             'repos_url': "https://api.github.com/users/google/repos",
@@ -93,8 +100,12 @@ class TestGithubOrgClient(unittest.TestCase):
         ({'license': {'key': 'bsd-3-clause'}}, 'bsd-3-clause', True),
         ({'license': {'key': 'bs1-1.0'}}, 'bsd-3-clause', False),
     ])
-
-    def test_has_license(self, repo: Dict, license_key: str, expected: bool) -> None:
+    def test_has_license(
+        self,
+        repo: Dict,
+        license_key: str,
+        expected: bool
+    ) -> None:
         """Test that the result of _public_repos_url is the expected one
         """
         gh_org_client = GithubOrgClient("google")
@@ -103,10 +114,10 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized_class([
         {
-            'org_payload' : TEST_PAYLOAD[0][0],
-            'repos_payload' : TEST_PAYLOAD[0][1],
-            'expected_payload' : TEST_PAYLOAD[0][2],
-            'apache2_repos' : TEST_PAYLOAD[0][3],
+            'org_payload': TEST_PAYLOAD[0][0],
+            'repos_payload': TEST_PAYLOAD[0][1],
+            'expected_payload': TEST_PAYLOAD[0][2],
+            'apache2_repos': TEST_PAYLOAD[0][3],
         },
     ])
     class TestIntegrationGithubOrgClient(unittest.TestCase):
@@ -130,14 +141,22 @@ class TestGithubOrgClient(unittest.TestCase):
             cls.get_patcher.start()
 
     def test_public_repos(self) -> None:
-        """Test that the list of repos is what you expect from the chosen payload.
+        """Test that the list of repos is what
+            you expect from the chosen payload.
         """
-        self.assertEqual(GithubOrgClient('google').public_repos(), self.expected_repos)
+        self.assertEqual(
+            GithubOrgClient('google').public_repos(),
+            self.expected_repos
+        )
 
     def test_public_repos_with_license(self) -> None:
-        """Test that the list of repos is what you expect from the chosen payload.
+        """Test that the list of repos is what
+            you expect from the chosen payload.
         """
-        self.assertEqual(GithubOrgClient('google').public_repos('apache-2.0'), self.apache2_repos)
+        self.assertEqual(
+            GithubOrgClient('google').public_repos('apache-2.0'),
+            self.apache2_repos
+        )
 
     @classmethod
     def tearDownClass(cls) -> None:
