@@ -48,7 +48,7 @@ class TestGetJson(unittest.TestCase):
         attrs = {'json.return_value': test_payload}
         with patch('requests.get', return_value=Mock(**attrs)) as req_get:
             self.assertEqual(get_json(test_url), test_payload)
-            req_get.assert_called_once(test_url)
+            req_get.assert_called_once_with(test_url)
 
 class TestMemoize(unittest.TestCase):
     """Tests the `memoize` function.
