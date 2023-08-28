@@ -43,7 +43,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 )
             mocked_org.assert_called_once_with()
 
-    @patch('client.GithubOrgClient')
+    @patch('client.GithubOrgClient._public_repos_url')
     def test_public_repos(self, mock_get_json: MagicMock) -> None:
         """Test that the list of repos is what you expect from the
             chosen payload. Test that the mocked property and method
